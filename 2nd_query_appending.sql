@@ -20,65 +20,132 @@ FROM (
     OFFSET
       (4)] AS FLOAT64) AS ARF,
       
+      --
+      
     (CASE
         WHEN (
-        LOWER(SourceCommonName) LIKE "%elon_musk%" 
-        OR LOWER(SourceCommonName) LIKE "%elon-musk%" 
-        OR LOWER(Persons) LIKE "elon musk" 
-        OR LOWER(V2Persons) LIKE "elon musk" 
-        OR LOWER(AllNames) LIKE "elon musk") THEN "Elon Musk"
+        LOWER(DocumentIdentifier) LIKE "%elon_musk%" 
+        OR LOWER(DocumentIdentifier) LIKE "%elon-musk%"
+        OR LOWER(DocumentIdentifier) LIKE "%elonmusk%"
+        
+        OR LOWER(Persons) LIKE "%elon musk%" 
+        OR LOWER(V2Persons) LIKE "%elon musk%" 
+        OR LOWER(AllNames) LIKE "%elon musk%") THEN "Elon Musk"
+        
+        --
         
         WHEN ( 
-        (LOWER(SourceCommonName) LIKE "%tesla%"
-          OR LOWER(Organizations) LIKE "tesla"
-          OR LOWER(AllNames) LIKE "tesla")
-        AND ( LOWER(SourceCommonName) NOT LIKE "%nikola%"
-          OR LOWER(SourceCommonName) NOT LIKE "%coil%")) THEN "Tesla cars"
+        (LOWER(DocumentIdentifier) LIKE "%tesla%"
+          OR LOWER(Organizations) LIKE "%tesla%"
+          OR LOWER(AllNames) LIKE "%tesla%")
+          
+        AND ( 
+        LOWER(DocumentIdentifier) NOT LIKE "%nikola%"
+          OR LOWER(DocumentIdentifier) NOT LIKE "%coil%")) THEN "Tesla"
+          
+          --
           
         WHEN ( 
-        LOWER(SourceCommonName) LIKE "%openai%" 
-        OR LOWER(SourceCommonName) LIKE "%open_ai%" 
-        OR LOWER(SourceCommonName) LIKE "%open-ai%" 
-        OR LOWER(Organizations) LIKE "openai" 
-        OR LOWER(AllNames) LIKE "openai") THEN "OpenAI"
+        LOWER(DocumentIdentifier) LIKE "%openai%" 
+        OR LOWER(DocumentIdentifier) LIKE "%open_ai%" 
+        OR LOWER(DocumentIdentifier) LIKE "%open-ai%"
+        OR LOWER(DocumentIdentifier) LIKE "%robosumo%"
+        OR LOWER(DocumentIdentifier) LIKE "%dactyl%"
+        OR LOWER(DocumentIdentifier) LIKE "%openai_gym%"
+        OR LOWER(DocumentIdentifier) LIKE "%openai-gym%"
+        OR LOWER(DocumentIdentifier) LIKE "%openaigym%"
+        
+        OR LOWER(SourceCommonName) LIKE "%openai.com%"
+        OR LOWER(Organizations) LIKE "%openai%" 
+        OR LOWER(AllNames) LIKE "%openai%"
+        
+        ) THEN "OpenAI"
+        
+        --
         
         WHEN ( 
-        LOWER(SourceCommonName) LIKE "%spacex%"
-        OR LOWER(SourceCommonName) LIKE "%starlink%"
-        OR LOWER(SourceCommonName) LIKE "%space_x%"
-        OR LOWER(SourceCommonName) LIKE "%space-x%"
+        LOWER(DocumentIdentifier) LIKE "%spacex%"
+        or LOWER(SourceCommonName) like "%spacex%"
+        OR LOWER(DocumentIdentifier) LIKE "%starlink%"
+        OR LOWER(DocumentIdentifier) LIKE "%space_x%"
+        OR LOWER(DocumentIdentifier) LIKE "%space-x%"
         OR LOWER(Organizations) LIKE "spacex"
         OR LOWER(AllNames) LIKE "spacex"
         OR LOWER(AllNames) LIKE "starlink") THEN "SpaceX"
         
-        WHEN ( 
-        LOWER(SourceCommonName) LIKE "%hyperloop%" 
-        OR LOWER(SourceCommonName) LIKE "%theboringcompany%" 
-        OR LOWER(SourceCommonName) LIKE "%the-boring-company%" 
-        OR LOWER(SourceCommonName) LIKE "%the_boring_company%" 
-        OR LOWER(Organizations) LIKE "hyperloop" 
-        OR LOWER(Organizations) LIKE "the boring company" 
-        OR LOWER(AllNames) LIKE "the boring company") THEN "The Boring Company"
-        
-        WHEN (
-        LOWER(SourceCommonName) LIKE "%neuralink%"
-        OR LOWER(Organizations) LIKE "neuralink"
-        OR LOWER(AllNames) LIKE "neuralink") THEN "Neuralink"
-        
-        WHEN (
-        LOWER(SourceCommonName) LIKE "%paypal%" 
-        OR LOWER(Organizations) LIKE "paypal" 
-        OR LOWER(AllNames) LIKE "paypal") THEN "Paypal"
+        --
         
         WHEN ( 
-        LOWER(SourceCommonName) LIKE "%solarcity%"
-        OR LOWER(Organizations) LIKE "solarcity"
-        OR LOWER(AllNames) LIKE "solarcity") THEN "SolarCity"
+        LOWER(DocumentIdentifier) LIKE "%hyperloop%" 
+        OR LOWER(DocumentIdentifier) LIKE "%theboringcompany%" 
+        OR LOWER(DocumentIdentifier) LIKE "%the-boring-company%" 
+        OR LOWER(DocumentIdentifier) LIKE "%the_boring_company%" 
+        
+        OR LOWER(DocumentIdentifier) LIKE "%las_vegas_convention_center_loop%"
+        OR LOWER(DocumentIdentifier) LIKE "%las-vegas-convention-center-loop%"
+        
+        OR LOWER(DocumentIdentifier) LIKE "%dogout_loop%"
+        OR LOWER(DocumentIdentifier) LIKE "%dogout-loop%"
+        
+        OR LOWER(DocumentIdentifier) LIKE "%baltimore_loop%"
+        OR LOWER(DocumentIdentifier) LIKE "%baltimore-loop%"
+        
+        
+        OR LOWER(Organizations) LIKE "%hyperloop%" 
+        OR LOWER(Organizations) LIKE "%las vegas convention center loop%"
+        OR LOWER(Organizations) LIKE "%dogout loop%"
+        OR LOWER(Organizations) LIKE "%baltimore loop%" 
+        OR LOWER(Organizations) LIKE "%the boring company%" 
+        OR LOWER(AllNames) LIKE "%the boring company%"
+        OR LOWER(AllNames) LIKE "%hyperloop%"
+        OR LOWER(AllNames) LIKE "%las vegas convention center loop%"
+        OR LOWER(AllNames) LIKE "%dogout loop%"
+        OR LOWER(AllNames) LIKE "%baltimore loop%"
+        ) THEN "The Boring Company"
+        
+        --
+        
+        WHEN (
+        LOWER(DocumentIdentifier) LIKE "%neuralink%"
+        OR LOWER(Organizations) LIKE "%neuralink%"
+        OR LOWER(AllNames) LIKE "%neuralink%") THEN "Neuralink"
+        
+        WHEN (
+        LOWER(DocumentIdentifier) LIKE "%paypal%" 
+        OR LOWER(DocumentIdentifier) LIKE "%krakenjs%"
+        OR LOWER(DocumentIdentifier) LIKE "%nemojs%"
+        OR (LOWER(DocumentIdentifier) LIKE "%selion%" AND LOWER(DocumentIdentifier) LIKE "%java%")
+        OR (LOWER(DocumentIdentifier) LIKE "%gimel%" AND LOWER(DocumentIdentifier) LIKE "%data%")
+        OR (LOWER(DocumentIdentifier) LIKE "%squbs%" and LOWER(DocumentIdentifier) LIKE "%deploy%")
+        OR LOWER(DocumentIdentifier) LIKE "%card.io%"
+        OR LOWER(DocumentIdentifier) LIKE "%card_io%"
+        OR LOWER(DocumentIdentifier) LIKE "%card-io%"
+        OR (LOWER(DocumentIdentifier) LIKE "%namenode%" and LOWER(DocumentIdentifier) LIKE "%analytics%")
+        OR LOWER(Organizations) LIKE "%paypal%" 
+        OR LOWER(AllNames) LIKE "%paypal%") THEN "PayPal"
+        
+        WHEN ( 
+        LOWER(DocumentIdentifier) LIKE "%solarcity%"
+        OR LOWER(Organizations) LIKE "%solarcity%"
+        OR LOWER(Organizations) LIKE "%solar city%"
+        OR LOWER(AllNames) LIKE "%solarcity%"
+        OR LOWER(AllNames) LIKE "%solar city%"
+        
+        OR (
+        LOWER(DocumentIdentifier) LIKE "%tesla%" 
+        AND 
+        (
+        LOWER(DocumentIdentifier) LIKE "%batery%"
+        OR LOWER(DocumentIdentifier) LIKE "%bateries%"
+        OR LOWER(DocumentIdentifier) LIKE "%autonomy%")
+        )
+        ) THEN "SolarCity"
         
     END
       ) AS Mentions,
   FROM
     `gdelt-bq.gdeltv2.gkg_partitioned` )
+
 WHERE
   Mentions IS NOT NULL
   AND Date BETWEEN DATE_SUB(CURRENT_DATE(), INTERVAL 1 MONTH) AND CURRENT_DATE() 
