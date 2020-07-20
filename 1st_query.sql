@@ -1,5 +1,10 @@
+-- It has that size because the code is not optimized for instance, with regex. 
+-- It is the kind of project where you start tailoring searches and it works, so,
+-- first rule of engineering: If something works and satisfies all possible 
+-- requirements, don't touch it.
+
 CREATE OR REPLACE TABLE
-  project-test-3105.gdelt_info_filtering.elon_musk_and_companies AS
+  projectname.tablename.elon_musk_and_companies AS
 SELECT
   *
 FROM (
