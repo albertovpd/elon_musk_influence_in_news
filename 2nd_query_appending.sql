@@ -1,3 +1,7 @@
+
+  -- I am using BigQuery scheduling options to monthly run this query and append to the
+  -- Elon Musk Table. That table will be the source of the Data studio.
+
 SELECT
   *
 FROM (
@@ -34,14 +38,20 @@ FROM (
         
         --
         
-        WHEN ( 
+        WHEN (
+         
         (LOWER(DocumentIdentifier) LIKE "%tesla%"
           OR LOWER(Organizations) LIKE "%tesla%"
           OR LOWER(AllNames) LIKE "%tesla%")
           
         AND ( 
         LOWER(DocumentIdentifier) NOT LIKE "%nikola%"
-          OR LOWER(DocumentIdentifier) NOT LIKE "%coil%")) THEN "Tesla"
+          OR LOWER(AllNames) NOT LIKE "%nikola%"
+          OR LOWER(DocumentIdentifier) NOT LIKE "%coil%")
+          
+          or LOWER(SourceCommonName) like "%tesla%" and LOWER(SourceCommonName) not like "%nikola%"
+          
+          ) THEN "Tesla"
           
           --
           
@@ -58,6 +68,8 @@ FROM (
         OR LOWER(SourceCommonName) LIKE "%openai.com%"
         OR LOWER(Organizations) LIKE "%openai%" 
         OR LOWER(AllNames) LIKE "%openai%"
+        
+        or LOWER(SourceCommonName) like "%openai%"
         
         ) THEN "OpenAI"
         
@@ -101,6 +113,9 @@ FROM (
         OR LOWER(AllNames) LIKE "%las vegas convention center loop%"
         OR LOWER(AllNames) LIKE "%dogout loop%"
         OR LOWER(AllNames) LIKE "%baltimore loop%"
+        
+        or LOWER(SourceCommonName) like "%theboringcompany%"
+        
         ) THEN "The Boring Company"
         
         --
@@ -108,7 +123,10 @@ FROM (
         WHEN (
         LOWER(DocumentIdentifier) LIKE "%neuralink%"
         OR LOWER(Organizations) LIKE "%neuralink%"
-        OR LOWER(AllNames) LIKE "%neuralink%") THEN "Neuralink"
+        OR LOWER(AllNames) LIKE "%neuralink%"
+        
+        or LOWER(SourceCommonName) like "%spacex%"
+        ) THEN "Neuralink"
         
         WHEN (
         LOWER(DocumentIdentifier) LIKE "%paypal%" 
@@ -122,7 +140,9 @@ FROM (
         OR LOWER(DocumentIdentifier) LIKE "%card-io%"
         OR (LOWER(DocumentIdentifier) LIKE "%namenode%" and LOWER(DocumentIdentifier) LIKE "%analytics%")
         OR LOWER(Organizations) LIKE "%paypal%" 
-        OR LOWER(AllNames) LIKE "%paypal%") THEN "PayPal"
+        OR LOWER(AllNames) LIKE "%paypal%"
+        or LOWER(SourceCommonName) like "%spacex%"
+        ) THEN "PayPal"
         
         WHEN ( 
         LOWER(DocumentIdentifier) LIKE "%solarcity%"
@@ -139,6 +159,7 @@ FROM (
         OR LOWER(DocumentIdentifier) LIKE "%bateries%"
         OR LOWER(DocumentIdentifier) LIKE "%autonomy%")
         )
+        or LOWER(SourceCommonName) like "%solarcity%"
         ) THEN "SolarCity"
         
     END
@@ -149,6 +170,3 @@ FROM (
 WHERE
   Mentions IS NOT NULL
   AND Date BETWEEN DATE_SUB(CURRENT_DATE(), INTERVAL 1 MONTH) AND CURRENT_DATE() 
-
-  -- I am using BigQuery scheduling options to monthly run this query and append to the
-  -- Elon Musk Table. That table will be the source of the Data studio.
